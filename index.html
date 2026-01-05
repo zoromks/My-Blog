@@ -1,11 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Documentation Site</title>
+  <title>My GitHub Pages Site</title>
+  <style>
+    body { font-family: Arial; margin: 0; }
+    header { background:#1f2937; color:white; padding:16px; }
+    nav a { color:white; margin-right:12px; text-decoration:none; }
+    section { padding:20px; }
+    .card { border:1px solid #ddd; padding:16px; border-radius:8px; margin-bottom:16px; }
+    button { padding:8px 14px; cursor:pointer; }
+  </style>
 </head>
+
 <body>
-  <h1>Welcome to My Site</h1>
-  <p>This is my GitHub Pages documentation website.</p>
+
+<header>
+  <h2>My Documentation Page</h2>
+  <nav>
+    <a href="#about">About</a>
+    <a href="#features">Features</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section id="about" class="card">
+  <h3>About</h3>
+  <p>This page is created using GitHub Pages. I am improving it with UI features.</p>
+</section>
+
+<section id="features" class="card">
+  <h3>Feature List</h3>
+
+  <table border="1" cellpadding="8">
+    <tr><th>Feature</th><th>Status</th></tr>
+    <tr><td>Navigation Bar</td><td>Completed</td></tr>
+    <tr><td>Contact Form</td><td>In Progress</td></tr>
+  </table>
+
+  <br>
+  <button onclick="showMessage()">Click Me</button>
+  <p id="msg"></p>
+</section>
+
+<section id="contact" class="card">
+  <h3>Contact Form</h3>
+
+  <form onsubmit="submitForm(event)">
+    <label>Name:</label><br>
+    <input type="text" id="name" required><br><br>
+
+    <label>Email:</label><br>
+    <input type="email" id="email" required><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="result"></p>
+</section>
+
+<script>
+  function showMessage() {
+    document.getElementById("msg").innerText = "Thanks for clicking!";
+  }
+
+  function submitForm(e) {
+    e.preventDefault();
+    const name = document.getElementById("name").value;
+    document.getElementById("result").innerText =
+      "Form submitted — Hello " + name;
+  }
+</script>
+
 </body>
 </html>
-
