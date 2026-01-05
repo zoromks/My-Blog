@@ -1,74 +1,169 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My GitHub Pages Site</title>
-  <style>
-    body { font-family: Arial; margin: 0; }
-    header { background:#1f2937; color:white; padding:16px; }
-    nav a { color:white; margin-right:12px; text-decoration:none; }
-    section { padding:20px; }
-    .card { border:1px solid #ddd; padding:16px; border-radius:8px; margin-bottom:16px; }
-    button { padding:8px 14px; cursor:pointer; }
-  </style>
+<meta charset="UTF-8" />
+<title>Docs Portal</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+:root {
+  --bg: #ffffff;
+  --text: #111;
+  --card: #f3f3f3;
+}
+
+body.dark {
+  --bg: #0f172a;
+  --text: #e5e7eb;
+  --card: #1f2937;
+}
+
+header {
+  padding: 10px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: var(--card);
+  position: sticky;
+  top: 0;
+}
+
+input, button {
+  padding: 6px 10px;
+}
+
+#tabs button {
+  border: none;
+  background: var(--card);
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+#tabs button.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.page {
+  display: none;
+  padding: 18px;
+}
+
+.page.active {
+  display: block;
+}
+
+.card {
+  background: var(--card);
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+}
+
+.collapsible {
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.content {
+  display: none;
+  padding: 8px;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h2>My Documentation Page</h2>
-  <nav>
-    <a href="#about">About</a>
-    <a href="#features">Features</a>
-    <a href="#contact">Contact</a>
-  </nav>
+  <div id="tabs">
+    <button onclick="showPage('home')" class="active">Home</button>
+    <button onclick="showPage('docs')">Documentation</button>
+    <button onclick="showPage('about')">About</button>
+  </div>
+
+  <input id="search" type="text" placeholder="Search content..." onkeyup="searchContent()" />
+
+  <button onclick="toggleDarkMode()">🌙 / ☀ Mode</button>
 </header>
 
-<section id="about" class="card">
-  <h3>About</h3>
-  <p>This page is created using GitHub Pages. I am improving it with UI features.</p>
-</section>
+<!-- HOME PAGE -->
+<div id="home" class="page active">
+  <h2>Home</h2>
+  <div class="card" contenteditable="true">
+    Welcome — this content is editable. Click and start typing.
+  </div>
 
-<section id="features" class="card">
-  <h3>Feature List</h3>
+  <button class="collapsible">Click to Expand Section</button>
+  <div class="content card" contenteditable="true">
+    Editable collapsible text block. Add notes or documentation here.
+  </div>
+</div>
 
-  <table border="1" cellpadding="8">
-    <tr><th>Feature</th><th>Status</th></tr>
-    <tr><td>Navigation Bar</td><td>Completed</td></tr>
-    <tr><td>Contact Form</td><td>In Progress</td></tr>
-  </table>
+<!-- DOCS PAGE -->
+<div id="docs" class="page">
+  <h2>Documentation</h2>
 
-  <br>
-  <button onclick="showMessage()">Click Me</button>
-  <p id="msg"></p>
-</section>
+  <div class="card" contenteditable="true">
+    Add your Python / SQL / Project notes here.
+  </div>
 
-<section id="contact" class="card">
-  <h3>Contact Form</h3>
+  <button class="collapsible">API Notes</button>
+  <div class="content card" contenteditable="true">
+    Editable API documentation section.
+  </div>
+</div>
 
-  <form onsubmit="submitForm(event)">
-    <label>Name:</label><br>
-    <input type="text" id="name" required><br><br>
-
-    <label>Email:</label><br>
-    <input type="email" id="email" required><br><br>
-
-    <button type="submit">Submit</button>
-  </form>
-
-  <p id="result"></p>
-</section>
+<!-- ABOUT PAGE -->
+<div id="about" class="page">
+  <h2>About</h2>
+  <div class="card" contenteditable="true">
+    Add project description, version history, or team details.
+  </div>
+</div>
 
 <script>
-  function showMessage() {
-    document.getElementById("msg").innerText = "Thanks for clicking!";
-  }
+// Page Navigation (Tabbed Pages)
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 
-  function submitForm(e) {
-    e.preventDefault();
-    const name = document.getElementById("name").value;
-    document.getElementById("result").innerText =
-      "Form submitted — Hello " + name;
-  }
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.remove("active"));
+  event.target.classList.add("active");
+}
+
+// Dark Mode Toggle
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+}
+
+// Search Across Visible Page Content
+function searchContent() {
+  let term = document.getElementById("search").value.toLowerCase();
+  let active = document.querySelector(".page.active");
+  active.querySelectorAll(".card").forEach(card => {
+    card.style.display = card.innerText.toLowerCase().includes(term) ? "block" : "none";
+  });
+}
+
+// Collapsible Sections
+document.querySelectorAll(".collapsible").forEach(btn => {
+  btn.onclick = () => {
+    let content = btn.nextElementSibling;
+    content.style.display = (content.style.display === "block") ? "none" : "block";
+  };
+});
 </script>
 
 </body>
